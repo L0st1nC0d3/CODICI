@@ -85,10 +85,6 @@ int eval(char* expr)
         }
     }
     el[i][q]='\0';
-    for(i=0;i<j;i++)
-    {
-        printf("%s\n",el[i]);
-    }
     char* n;
     s=j;
     for(i=0;i<(s/2);i++)
