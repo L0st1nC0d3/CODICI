@@ -6,15 +6,15 @@ int eval(char* expr);
 
 void main()
 {
-    char* s="       3   120  5  41130     7 -611     3   56   ";
+    char* s="               9               4             8          345             ";
     int v=eval(s);
     printf("Valore massimo: %d.\n",v);
 }
 
 int eval(char* expr)
 {
-    int i=0,j=1,k=0,q=0,max=0,l=strlen(expr),min=0;
-    int c=-65534,res=0,mol=1,base=0,r=0,s=0;
+    int i=0,j=1,k=0,q=0,l=strlen(expr),min=0,max_1=(l-1);
+    int max=-65534,res=0,mol=1,base=0,r=0,s=0;
     if(expr[0]==' ')
     {
         for(min=0;expr[min]==' ';min++)
@@ -24,12 +24,12 @@ int eval(char* expr)
     }
     if(expr[strlen(expr)-1]==' ')
     {
-        for(max=(l-1);expr[max]==' ';max--)
+        for(max_1=(l-1);expr[max_1]==' ';max_1--)
         {
             //niente
         }
     }
-    for(i=min;i<=max;i++)
+    for(i=min;i<=max_1;i++)
     {
         if(expr[i]==' ')
         {
@@ -41,43 +41,54 @@ int eval(char* expr)
         }
     }
     char** el=malloc(sizeof(char*)*j);              //alloco l'array di stringhe
-    for(i=0;i<j;i++)
+    k=min;
+    i=0;
+    for(;k<=max_1;k++)
     {
-        for(k=min;k<=max;k++)
+        if(expr[k]!=' ')
+        {q++;}
+        if((expr[k]==' ')&&(expr[k-1]!=' '))
         {
-            if(expr[k]!=' ')
-            {q++;}
-            if((expr[k]==' ')&&(expr[k-1]!=' '))
+            el[i]=malloc((sizeof(char)*q)+1);                               //alloco le singole stringhe
+            q=0;
+            while(expr[k]==' ')
             {
-                el[i]=malloc(sizeof(char)*(q+1));                               //alloco le singole stringhe
-                q=0;
+                k++;
             }
+            k--;
+            if(i<j)
+            {i++;}
         }
     }
+    el[i]=malloc((sizeof(char)*q)+1);
     k=min;
     q=0;
     i=0;
-        for(;k<=max;k++)
+    for(;k<=max_1;k++)
+    {
+        if(expr[k]!=' ')
         {
-            if(expr[k]!=' ')
-            {
-                el[i][q]=expr[k];
-                q++;
-            }
-            if((expr[k]==' ')&&(expr[k-1]!=' '))                            //associo ad ogni puntatore la stringa
-            {
-                el[i][q]='\0';                                                                  //termino stringa
-                q=0;
-                i++;                                                                                //passo al prossimo puntatore
-            }
+            el[i][q]=expr[k];
+            q++;
         }
+        if((expr[k]==' ')&&(expr[k-1]!=' '))                            //associo ad ogni puntatore la stringa
+        {
+            el[i][q]='\0';                                                                  //termino stringa
+            q=0;
+            while(expr[k]==' ')
+            {
+                k++;
+            }
+            k--;
+            if(i<j)
+            {i++;}
+        }
+    }
+    el[i][q]='\0';
     for(i=0;i<j;i++)
     {
-        printf("%s\n",el[i]);                                                                           //visualizzo le stringhe
+        printf("%s\n",el[i]);
     }
-
-    //////////////////////////////
-
     char* n;
     s=j;
     for(i=0;i<(s/2);i++)
@@ -112,10 +123,10 @@ int eval(char* expr)
             mol=1;
         }
         }
-        if(res>c)
+        if(res>max)
         {
-            c=res;
+            max=res;
         }
     }
-    return c;
+    return max;
 }
